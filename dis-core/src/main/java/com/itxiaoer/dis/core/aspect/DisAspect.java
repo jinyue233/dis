@@ -74,7 +74,11 @@ public class DisAspect {
             if (!(proceed instanceof Responsive)) {
                 throw new DisException(signature.getClass().getName() + "#" + signature.getMethod().getName() + " return response must be implements Responsive. ");
             }
-            // 此处服务器断电如何处理？单位时间请求无法处理? TODO 
+            // 此处服务器断电如何处理？单位时间请求无法处理? TODO
+            // 因为处理完业务逻辑后，机器宕机，此时分为两种情况：
+            // 1，业务处理成功，但是由于机器宕机，此时无法返回结果给用户，此时幂等性相关的Key已经存在。
+            // 2，业务处理失败，但是由于机器宕机，此时也无法返回结果给用户，此时幂等性相关的Key已经存在，导致用户无法完成业务逻辑，
+            // 有不好判断用户的重复请求是正常的还是非正常的请求，都会做幂等处理，此时用户就完成不聊操作了
             Responsive response = (Responsive) proceed;
             // success
             if (response.isSuccess()) {

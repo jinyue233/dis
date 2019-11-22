@@ -1,9 +1,10 @@
 spring:
   redis:
     host: 127.0.0.1
+    port: 6379
   dis:
     store:
-#      type: redis
+      type: redis
     active: true
     appId: dis-sample
 logging:
